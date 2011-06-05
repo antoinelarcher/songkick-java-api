@@ -1,0 +1,3 @@
+TODO
+
+- Divorce API class from implementation and add mock implementation that can take JSON data from a directory

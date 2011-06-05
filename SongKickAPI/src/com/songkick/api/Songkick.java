@@ -7,8 +7,9 @@ import java.net.URL;
 import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
+
+import org.apache.log4j.Logger;
 
 import com.google.gson.Gson;
 import com.songkick.api.helper.ArtistResultsPage;
@@ -17,7 +18,6 @@ import com.songkick.api.helper.LocationResultsPage;
 import com.songkick.api.obj.Artist;
 import com.songkick.api.obj.Event;
 import com.songkick.api.obj.EventFilter;
-import com.songkick.api.obj.LocationFilter;
 import com.songkick.api.obj.Location;
 
 /**
@@ -30,6 +30,8 @@ import com.songkick.api.obj.Location;
 public class Songkick {
 	private String apiKey;
 	private static final SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd");
+	
+	private static Logger logger = Logger.getLogger(Songkick.class);
 	
 	public Songkick(String a) {
 		this.apiKey = a;
@@ -45,7 +47,7 @@ public class Songkick {
 	
 	private BufferedReader getReader(String u) throws IOException {
 		String urlStr = u + "&apikey="+apiKey;
-		System.err.println("url="+urlStr);
+		logger.debug("connecting to " + u);
 		URL url = new URL(urlStr);
 		HttpURLConnection c = (HttpURLConnection) url.openConnection();
 		return new BufferedReader(new InputStreamReader(c.getInputStream()));
@@ -74,6 +76,7 @@ public class Songkick {
 	 * @throws IOException
 	 */
 	public List<Artist> getArtists(String name, int page) throws IOException {
+		logger.info("getArtists() name="+name+",page="+page);
 		return getArtistResultsPage(name, page).getResultsPage().getResults().getArtists();
 	}
 
@@ -86,6 +89,7 @@ public class Songkick {
 	 */
 	
 	public List<Artist> getArtists(String name) throws IOException {
+		logger.info("getArtists() name="+name);
 		List<Artist> artists = new ArrayList<Artist>();
 		int pageNum = 1;
 
@@ -109,6 +113,7 @@ public class Songkick {
 	 * @throws IOException
 	 */
 	private LocationResultsPage getLocationResultsPage(String name, int page) throws IOException {
+		logger.info("getLocationResultsPage() name="+name+",page="+page);
 		BufferedReader reader = getReader("http://api.songkick.com/api/3.0/search/locations.json?page=" + page + "&query=" + URLEncoder.encode(name, "UTF-8"));
 		Gson gson = new Gson();
 		return gson.fromJson(reader,LocationResultsPage.class);
@@ -123,6 +128,7 @@ public class Songkick {
 	 * @throws IOException
 	 */
 	public List<Location> getLocationsByName(String name, int page) throws IOException {
+		logger.info("getLocationsByName() name="+name+",page="+page);
 		return getLocationResultsPage(name, page).getResultsPage().getResults().getLocations();
 	}
 	
@@ -135,6 +141,7 @@ public class Songkick {
 	 */
 	
 	public List<Location> getLocationsByName(String name) throws IOException {
+		logger.info("getLocationsByName() name="+name);
 		List<Location> locations = new ArrayList<Location>();
 		int pageNum = 1;
 
@@ -159,6 +166,7 @@ public class Songkick {
 	 */
 
 	private LocationResultsPage getLocationResultsPage(double lat, double lng, int page) throws IOException {
+		logger.info("getLocationResultsPage() lat="+lat+",lng="+lng+",page="+page);
 		BufferedReader reader = getReader("http://api.songkick.com/api/3.0/search/locations.json?location=geo:" + lat + "," + lng +"&page="+page);
 		Gson gson = new Gson();
 		return gson.fromJson(reader,LocationResultsPage.class);
@@ -175,6 +183,7 @@ public class Songkick {
 	 */
 	
 	public List<Location> getLocationsByLatLng(double lat, double lng, int page) throws IOException {
+		logger.info("getLocationsByLatLng() lat="+lat+",lng="+lng+",page="+page);
 		return getLocationResultsPage(lat, lng, page).getResultsPage().getResults().getLocations();
 	}
 	
@@ -188,6 +197,7 @@ public class Songkick {
 	 */
 	
 	public List<Location> getLocationsByLatLng(double lat, double lng) throws IOException {
+		logger.info("getLocationsByLatLng() lat="+lat+",lng="+lng);
 		List<Location> locations = new ArrayList<Location>();
 		int pageNum = 1;
 
@@ -201,8 +211,24 @@ public class Songkick {
 		return locations;
 	}
 
+	public List<Event> getEvents(EventFilter ef) throws IOException {
+		logger.info("getEvents() ef="+ef);
+		List<Event> events = new ArrayList<Event>();
+		int pageNum = 1;
+
+		List<Event> page = getEvents(ef, pageNum);
+		while (page!=null && (page.size()>0)) {
+			events.addAll(page);
+			// If there might be more Locations to grab, get another set
+			if (page.size()==50) page = getEvents(ef, ++pageNum);
+			else page = null;
+		}
+		return events;
+	}
+	
 	
 	public List<Event> getEvents(EventFilter ef, int page) throws IOException {
+		logger.info("getEvents() ef="+ef+",page="+page);
 		
 		String url = "http://api.songkick.com/api/3.0/events.json?";
 		if (ef.getArtistName()!=null) {
@@ -218,17 +244,15 @@ public class Songkick {
 		}
 		
 		if (ef.getLocation()!=null) {
-			url = url + "&location=";
-			if (ef.getLocation().isClientIp()) url = url + "clientIp";
-			else if (ef.getLocation().getIp()!=null) url = url + "ip:" + ef.getLocation().getIp();
-			else if (ef.getLocation().getMetroId()!=null) url = url + "sk:" + ef.getLocation().getMetroId();
-			else if (ef.getLocation().getLat()!=Double.MAX_VALUE && ef.getLocation().getLng()!=Double.MAX_VALUE) url = url + "geo:" + ef.getLocation().getLat() + "," + ef.getLocation().getLng();
-		
+			if (ef.getLocation().isClientIp()) url = url + "&location=clientip";
+			else if (ef.getLocation().getIp()!=null) url = url + "&location=ip:" + ef.getLocation().getIp();
+			else if (ef.getLocation().getMetroId()!=null) url = url + "&location=sk:" + ef.getLocation().getMetroId();
+			else if (ef.getLocation().getLat()!=Double.MAX_VALUE && ef.getLocation().getLng()!=Double.MAX_VALUE) url = url + "&location=geo:" + ef.getLocation().getLat() + "," + ef.getLocation().getLng();
 		}
 
 		url = url + "&page=" + page;
 		
-		BufferedReader reader = getReader(url);;
+		BufferedReader reader = getReader(url);
 		Gson gson = new Gson();
 		return gson.fromJson(reader,EventResultsPage.class).getResultsPage().getResults().getEvent();
 	}
