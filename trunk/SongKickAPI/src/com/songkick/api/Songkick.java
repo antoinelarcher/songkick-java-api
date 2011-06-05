@@ -280,9 +280,9 @@ public class Songkick {
 	}
 	
 	/**
-	 * Return all events matching an EventFilter
+	 * Get the calendar for a particular artist
 	 * 
-	 * @param ef
+	 * @param artistId
 	 * @return
 	 * @throws IOException
 	 */
@@ -302,13 +302,52 @@ public class Songkick {
 		return events;
 	}
 
+	/**
+	 * Get the specific page of an artists calendar
+	 * 
+	 * @param artistId
+	 * @param page
+	 * @return
+	 * @throws IOException
+	 */
 	
 	public List<Event> getArtistCalendar(String artistId, int page) throws IOException {
 		logger.info("getArtistCalendar() artistId="+artistId+",page="+page);
-		BufferedReader reader = getReader("http://api.songkick.com/api/3.0/artists/" + artistId + "/calendar.json");
+		BufferedReader reader = getReader("http://api.songkick.com/api/3.0/artists/" + artistId + "/calendar.json?page="+page);
 		Gson gson = new Gson();
 		return gson.fromJson(reader,EventResultsPage.class).getResultsPage().getResults().getEvent();
+	}
+	
+	/**
+	 * Get the calendar for a particular metro area
+	 * 
+	 * @param artistId
+	 * @return
+	 * @throws IOException
+	 */
 
+	//FIXME: so much repeated code around this pagination pattern. Sort it out.
+	
+	public List<Event> getMetroAreaCalendar(String areaId) throws IOException {
+		logger.info("getMetroAreaCalendar() areaId="+areaId);
+		List<Event> events = new ArrayList<Event>();
+		int pageNum = 1;
+
+		List<Event> page = getMetroAreaCalendar(areaId, pageNum);
+		while (page!=null && (page.size()>0)) {
+			events.addAll(page);
+			// If there might be more Locations to grab, get another set
+			if (page.size()==PAGE_SIZE) page = getMetroAreaCalendar(areaId, ++pageNum);
+			else page = null;
+		}
+		return events;
+	}
+	
+	public List<Event> getMetroAreaCalendar(String areaId, int page) throws IOException {
+		logger.info("getMetroAreaCalendar() areaId="+areaId+",page="+page);
+		BufferedReader reader = getReader("http://api.songkick.com/api/3.0/metro_areas/" + areaId + "/calendar.json?page="+page);
+		Gson gson = new Gson();
+		return gson.fromJson(reader,EventResultsPage.class).getResultsPage().getResults().getEvent();
 	}
 	
 }
