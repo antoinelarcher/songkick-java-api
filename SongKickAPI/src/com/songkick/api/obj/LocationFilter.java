@@ -72,4 +72,8 @@ public class LocationFilter {
 	public void setClientIp(boolean clientIp) {
 		this.clientIp = clientIp;
 	}
+	
+	public String toString() {
+		return "LocationFilter(metroId="+metroId+",lat="+lat+",lng="+lng+",ip="+ip+",clientIp="+clientIp+")";
+	}
 }
