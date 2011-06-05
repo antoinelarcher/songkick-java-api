@@ -51,4 +51,8 @@ public class EventFilter {
 		this.location = location;
 	}
 	
+	public String toString() {
+		return "EventFilter(artistName="+artistName+",minDate="+minDate+",maxDate="+maxDate+",location="+location+")";
+	}
+	
 }
