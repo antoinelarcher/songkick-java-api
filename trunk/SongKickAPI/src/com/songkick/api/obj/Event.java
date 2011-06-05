@@ -11,7 +11,6 @@
  */ 
 package com.songkick.api.obj;
 
-import java.util.Date;
 import java.util.List;
 
 public class Event {
