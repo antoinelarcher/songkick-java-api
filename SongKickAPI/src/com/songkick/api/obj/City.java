@@ -13,6 +13,7 @@ package com.songkick.api.obj;
 
 public class City {
 	private String displayName;
+	private String city;
 	private NamedItem country;
 	private float lng;
 	private float lat;
@@ -40,6 +41,12 @@ public class City {
 	}
 	public void setLat(float lat) {
 		this.lat = lat;
+	}
+	public String getCity() {
+		return city;
+	}
+	public void setCity(String city) {
+		this.city = city;
 	}
 	
 	

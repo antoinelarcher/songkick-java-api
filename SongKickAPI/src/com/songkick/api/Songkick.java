@@ -30,7 +30,7 @@ import com.songkick.api.obj.Location;
 public class Songkick {
 	private String apiKey;
 	private static final SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd");
-	
+	private static final int PAGE_SIZE = 50;
 	private static Logger logger = Logger.getLogger(Songkick.class);
 	
 	public Songkick(String a) {
@@ -46,8 +46,13 @@ public class Songkick {
 	 */
 	
 	private BufferedReader getReader(String u) throws IOException {
-		String urlStr = u + "&apikey="+apiKey;
-		logger.debug("connecting to " + u);
+		String urlStr = u;
+		if (urlStr.contains("?")) {
+			if (!urlStr.endsWith("?")) urlStr += "&";
+		} else 
+			urlStr += "?";
+		urlStr += "apikey="+apiKey;
+		logger.debug("connecting to " + urlStr);
 		URL url = new URL(urlStr);
 		HttpURLConnection c = (HttpURLConnection) url.openConnection();
 		return new BufferedReader(new InputStreamReader(c.getInputStream()));
@@ -98,7 +103,7 @@ public class Songkick {
 			artists.addAll(page);
 
 			// If there might be more artists to grab, get another set
-			if (page.size()==50) page = getArtists(name, ++pageNum); 
+			if (page.size()==PAGE_SIZE) page = getArtists(name, ++pageNum); 
 			else page = null;
 		}
 		return artists;
@@ -149,7 +154,7 @@ public class Songkick {
 		while (page!=null && (page.size()>0)) {
 			locations.addAll(page);
 			// If there might be more locations to grab, get another set
-			if (page.size()==50) page = getLocationsByName(name, ++pageNum);
+			if (page.size()==PAGE_SIZE) page = getLocationsByName(name, ++pageNum);
 			else page = null;
 		}
 		return locations;
@@ -205,11 +210,19 @@ public class Songkick {
 		while (page!=null && (page.size()>0)) {
 			locations.addAll(page);
 			// If there might be more Locations to grab, get another set
-			if (page.size()==50) page = getLocationsByLatLng(lat, lng, ++pageNum);
+			if (page.size()==PAGE_SIZE) page = getLocationsByLatLng(lat, lng, ++pageNum);
 			else page = null;
 		}
 		return locations;
 	}
+	
+	/**
+	 * Return all events matching an EventFilter
+	 * 
+	 * @param ef
+	 * @return
+	 * @throws IOException
+	 */
 
 	public List<Event> getEvents(EventFilter ef) throws IOException {
 		logger.info("getEvents() ef="+ef);
@@ -220,11 +233,20 @@ public class Songkick {
 		while (page!=null && (page.size()>0)) {
 			events.addAll(page);
 			// If there might be more Locations to grab, get another set
-			if (page.size()==50) page = getEvents(ef, ++pageNum);
+			if (page.size()==PAGE_SIZE) page = getEvents(ef, ++pageNum);
 			else page = null;
 		}
 		return events;
 	}
+	
+	/**
+	 * Return a specific page of events matching a particular EventFilter
+	 * 
+	 * @param ef
+	 * @param page
+	 * @return
+	 * @throws IOException
+	 */
 	
 	
 	public List<Event> getEvents(EventFilter ef, int page) throws IOException {
@@ -255,6 +277,38 @@ public class Songkick {
 		BufferedReader reader = getReader(url);
 		Gson gson = new Gson();
 		return gson.fromJson(reader,EventResultsPage.class).getResultsPage().getResults().getEvent();
+	}
+	
+	/**
+	 * Return all events matching an EventFilter
+	 * 
+	 * @param ef
+	 * @return
+	 * @throws IOException
+	 */
+
+	public List<Event> getArtistCalendar(String artistId) throws IOException {
+		logger.info("getArtistCalendar() artistId="+artistId);
+		List<Event> events = new ArrayList<Event>();
+		int pageNum = 1;
+
+		List<Event> page = getArtistCalendar(artistId, pageNum);
+		while (page!=null && (page.size()>0)) {
+			events.addAll(page);
+			// If there might be more Locations to grab, get another set
+			if (page.size()==PAGE_SIZE) page = getArtistCalendar(artistId, ++pageNum);
+			else page = null;
+		}
+		return events;
+	}
+
+	
+	public List<Event> getArtistCalendar(String artistId, int page) throws IOException {
+		logger.info("getArtistCalendar() artistId="+artistId+",page="+page);
+		BufferedReader reader = getReader("http://api.songkick.com/api/3.0/artists/" + artistId + "/calendar.json");
+		Gson gson = new Gson();
+		return gson.fromJson(reader,EventResultsPage.class).getResultsPage().getResults().getEvent();
+
 	}
 	
 }

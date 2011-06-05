@@ -1,4 +1,7 @@
 package com.songkick.api.obj;
+
+import java.util.List;
+
 /**
  * $Revision$
  * $Date$
@@ -16,6 +19,7 @@ public class Artist {
 	private String displayName;
 	private String id;
 	private String onTourUntil;
+	private List<Identifier> identifier;
 
 	public String getUri() {
 		return uri;
@@ -40,6 +44,12 @@ public class Artist {
 	}
 	public void setOnTourUntil(String onTourUntil) {
 		this.onTourUntil = onTourUntil;
+	}
+	public List<Identifier> getIdentifier() {
+		return identifier;
+	}
+	public void setIdentifier(List<Identifier> identifier) {
+		this.identifier = identifier;
 	}
 	
 }

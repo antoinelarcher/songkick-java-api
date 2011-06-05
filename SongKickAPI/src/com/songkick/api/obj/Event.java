@@ -22,6 +22,8 @@ public class Event {
 	private SkTime start;
 	private List<Performance> performance;
 	private String id;
+	private double popularity;
+	
 	public String getDisplayName() {
 		return displayName;
 	}
@@ -69,6 +71,12 @@ public class Event {
 	}
 	public void setId(String id) {
 		this.id = id;
+	}
+	public double getPopularity() {
+		return popularity;
+	}
+	public void setPopularity(double popularity) {
+		this.popularity = popularity;
 	}
 	
 	
