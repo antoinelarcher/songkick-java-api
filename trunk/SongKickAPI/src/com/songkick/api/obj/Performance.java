@@ -17,6 +17,7 @@ public class Performance {
 	private String displayName;
 	private int billingIndex;
 	private long id;
+	private String billing;
 	
 	public Artist getArtist() {
 		return artist;
@@ -41,6 +42,12 @@ public class Performance {
 	}
 	public void setId(long id) {
 		this.id = id;
+	}
+	public String getBilling() {
+		return billing;
+	}
+	public void setBilling(String billing) {
+		this.billing = billing;
 	}
 	
 }
