@@ -11,7 +11,7 @@
  */ 
 package com.songkick.api.helper;
 
-public class ArtistResultsPageContents {
+public class ArtistResultsPageContents implements ResultsPageContents {
 
 	private ArtistResults results;
 	private int totalEntries;
