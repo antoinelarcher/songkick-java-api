@@ -49,5 +49,47 @@ public class Performance {
 	public void setBilling(String billing) {
 		this.billing = billing;
 	}
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((artist == null) ? 0 : artist.hashCode());
+		result = prime * result + ((billing == null) ? 0 : billing.hashCode());
+		result = prime * result + billingIndex;
+		result = prime * result
+				+ ((displayName == null) ? 0 : displayName.hashCode());
+		result = prime * result + (int) (id ^ (id >>> 32));
+		return result;
+	}
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Performance other = (Performance) obj;
+		if (artist == null) {
+			if (other.artist != null)
+				return false;
+		} else if (!artist.equals(other.artist))
+			return false;
+		if (billing == null) {
+			if (other.billing != null)
+				return false;
+		} else if (!billing.equals(other.billing))
+			return false;
+		if (billingIndex != other.billingIndex)
+			return false;
+		if (displayName == null) {
+			if (other.displayName != null)
+				return false;
+		} else if (!displayName.equals(other.displayName))
+			return false;
+		if (id != other.id)
+			return false;
+		return true;
+	}
 	
 }

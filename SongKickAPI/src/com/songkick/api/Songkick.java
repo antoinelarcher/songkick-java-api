@@ -15,8 +15,11 @@ import com.google.gson.Gson;
 import com.songkick.api.helper.ArtistResultsPage;
 import com.songkick.api.helper.EventResultsPage;
 import com.songkick.api.helper.LocationResultsPage;
+import com.songkick.api.helper.CalendarResultsPage;
 import com.songkick.api.helper.ResultsPage;
+import com.songkick.api.helper.SingleEventResultsPage;
 import com.songkick.api.obj.Artist;
+import com.songkick.api.obj.CalendarEntry;
 import com.songkick.api.obj.Event;
 import com.songkick.api.obj.EventFilter;
 import com.songkick.api.obj.Location;
@@ -81,6 +84,8 @@ public class Songkick {
 	 * @return
 	 * @throws IOException
 	 */
+	
+	@SuppressWarnings (value="unchecked")
 	public List<Artist> getArtists(String name) throws IOException {
 		logger.info("getArtists() name="+name);
 		String url = "http://api.songkick.com/api/3.0/search/artists.json?query=" + URLEncoder.encode(name, "UTF-8");
@@ -95,6 +100,8 @@ public class Songkick {
 	 * @return
 	 * @throws IOException
 	 */
+	
+	@SuppressWarnings (value="unchecked")
 	public List<Location> getLocationsByName(String name) throws IOException {
 		logger.info("getLocationsByName() name="+name);
 		String url = "http://api.songkick.com/api/3.0/search/locations.json?query=" + URLEncoder.encode(name, "UTF-8");
@@ -110,6 +117,7 @@ public class Songkick {
 	 * @throws IOException
 	 */
 	
+	@SuppressWarnings (value="unchecked")
 	public List<Location> getLocationsByLatLng(double lat, double lng) throws IOException {
 		logger.info("getLocationsByLatLng() lat="+lat+",lng="+lng);
 		String url = "http://api.songkick.com/api/3.0/search/locations.json?location=geo:" + lat + "," + lng;
@@ -124,6 +132,7 @@ public class Songkick {
 	 * @throws IOException
 	 */
 
+	@SuppressWarnings (value="unchecked")
 	public List<Event> getEvents(EventFilter ef) throws IOException {
 		logger.info("getEvents() ef="+ef);
 		
@@ -158,6 +167,7 @@ public class Songkick {
 	 * @throws IOException
 	 */
 
+	@SuppressWarnings (value="unchecked")
 	public List<Event> getArtistCalendar(String artistId) throws IOException {
 		logger.info("getArtistCalendar() artistId="+artistId);
 		String url = "http://api.songkick.com/api/3.0/artists/" + artistId + "/calendar.json";
@@ -171,11 +181,35 @@ public class Songkick {
 	 * @return
 	 * @throws IOException
 	 */
-
+	
+	@SuppressWarnings (value="unchecked")
 	public List<Event> getMetroAreaCalendar(String areaId) throws IOException {
 		logger.info("getMetroAreaCalendar() areaId="+areaId);
 		String url = "http://api.songkick.com/api/3.0/metro_areas/" + areaId + "/calendar.json";
 		return (List<Event>) getAllPages(url,EventResultsPage.class);
+	}
+	
+	/**
+	 * Get the calendar for a specific user
+	 * 
+	 * @param user
+	 * @return
+	 * @throws IOException
+	 */
+	
+	@SuppressWarnings (value="unchecked")	
+	public List<CalendarEntry> getUserCalendar(String user) throws IOException {
+		logger.info("getUserCalendar() user="+user);
+		String url = "http://api.songkick.com/api/3.0/users/" + user + "/calendar.json?reason=tracked_artist";
+		return (List<CalendarEntry>) getAllPages(url, CalendarResultsPage.class);
+	}
+
+	@SuppressWarnings (value="unchecked")	
+	public Event getEvent(String id) throws IOException {
+		logger.info("getEvent() id="+id);
+		String url = "http://api.songkick.com/api/3.0/events/" + id + ".json";
+		List<Event> list = (List<Event>) getAllPages(url, SingleEventResultsPage.class);
+		return list.get(0);
 	}
 	
 	/**

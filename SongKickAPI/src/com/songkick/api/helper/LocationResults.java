@@ -11,7 +11,6 @@
  */ 
 package com.songkick.api.helper;
 import java.util.List;
-
 import com.songkick.api.obj.Location;
 
 public class LocationResults implements Results {
@@ -25,7 +24,7 @@ public class LocationResults implements Results {
 		this.location = location;
 	}
 
-	public List getList() {
+	public List<Location> getList() {
 		return location;
 	}
 }

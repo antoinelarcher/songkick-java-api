@@ -25,7 +25,7 @@ public class EventResults implements Results {
 		this.event = event;
 	}
 
-	public List getList() {
+	public List<Event> getList() {
 		return event;
 	}
 }
