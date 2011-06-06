@@ -48,6 +48,48 @@ public class City {
 	public void setCity(String city) {
 		this.city = city;
 	}
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((city == null) ? 0 : city.hashCode());
+		result = prime * result + ((country == null) ? 0 : country.hashCode());
+		result = prime * result
+				+ ((displayName == null) ? 0 : displayName.hashCode());
+		result = prime * result + Float.floatToIntBits(lat);
+		result = prime * result + Float.floatToIntBits(lng);
+		return result;
+	}
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		City other = (City) obj;
+		if (city == null) {
+			if (other.city != null)
+				return false;
+		} else if (!city.equals(other.city))
+			return false;
+		if (country == null) {
+			if (other.country != null)
+				return false;
+		} else if (!country.equals(other.country))
+			return false;
+		if (displayName == null) {
+			if (other.displayName != null)
+				return false;
+		} else if (!displayName.equals(other.displayName))
+			return false;
+		if (Float.floatToIntBits(lat) != Float.floatToIntBits(other.lat))
+			return false;
+		if (Float.floatToIntBits(lng) != Float.floatToIntBits(other.lng))
+			return false;
+		return true;
+	}
 	
 	
 }
