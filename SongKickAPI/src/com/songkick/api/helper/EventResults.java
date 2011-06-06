@@ -14,7 +14,7 @@ import java.util.List;
 
 import com.songkick.api.obj.Event;
 
-public class EventResults {
+public class EventResults implements Results {
 	private List<Event> event;
 
 	public List<Event> getEvent() {
@@ -23,5 +23,9 @@ public class EventResults {
 
 	public void setArtist(List<Event> event) {
 		this.event = event;
+	}
+
+	public List getList() {
+		return event;
 	}
 }

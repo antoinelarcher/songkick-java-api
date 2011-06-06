@@ -11,7 +11,7 @@
  */ 
 package com.songkick.api.helper;
 
-public class EventResultsPageContents {
+public class EventResultsPageContents implements ResultsPageContents {
 
 	private EventResults results;
 	private int totalEntries;
@@ -19,7 +19,7 @@ public class EventResultsPageContents {
 	private int page;
 	private String status;
 	
-	public EventResults getResults() {
+	public Results getResults() {
 		return results;
 	}
 	public void setResults(EventResults results) {

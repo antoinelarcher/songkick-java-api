@@ -14,14 +14,18 @@ import java.util.List;
 
 import com.songkick.api.obj.Location;
 
-public class LocationResults {
+public class LocationResults implements Results {
 	private List<Location> location;
 
 	public List<Location> getLocations() {
 		return location;
 	}
 
-	public void setArtist(List<Location> location) {
+	public void setLocation(List<Location> location) {
 		this.location = location;
+	}
+
+	public List getList() {
+		return location;
 	}
 }

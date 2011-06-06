@@ -11,7 +11,7 @@
  */ 
 package com.songkick.api.helper;
 
-public class LocationResultsPageContents {
+public class LocationResultsPageContents implements ResultsPageContents {
 
 	private LocationResults results;
 	private int totalEntries;
@@ -19,7 +19,7 @@ public class LocationResultsPageContents {
 	private int page;
 	private String status;
 	
-	public LocationResults getResults() {
+	public Results getResults() {
 		return results;
 	}
 	public void setResults(LocationResults results) {
