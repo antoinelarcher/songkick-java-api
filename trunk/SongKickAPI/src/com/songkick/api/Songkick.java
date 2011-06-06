@@ -178,8 +178,18 @@ public class Songkick {
 		return (List<Event>) getAllPages(url,EventResultsPage.class);
 	}
 	
+	/**
+	 * Grabs a single page of results from a given URL, parses them out into a ResultsPage and returns a
+	 * List of their contents
+	 * 
+	 * @param url
+	 * @param parsingClass
+	 * @param page
+	 * @return
+	 * @throws IOException
+	 */
 	
-	public List<? extends Object> getSinglePage(String url, Class<? extends ResultsPage> parsingClass, int page) throws IOException {
+	private List<? extends Object> getSinglePage(String url, Class<? extends ResultsPage> parsingClass, int page) throws IOException {
 		String u = appendCorrectSeparator(url);
 
 		u += "page="+page;
@@ -190,7 +200,17 @@ public class Songkick {
 		return rp.getResultsPageContents().getResults().getList();
 	}
 	
-	public List<? extends Object> getAllPages(String url, Class<? extends ResultsPage> parsingClass) throws IOException {
+	/**
+	 * Cycle through all available pages in a set of results, grabbing them and adding them to a list, which
+	 * is then returned.
+	 * 
+	 * @param url
+	 * @param parsingClass
+	 * @return
+	 * @throws IOException
+	 */
+	
+	private List<? extends Object> getAllPages(String url, Class<? extends ResultsPage> parsingClass) throws IOException {
 		List<Object> ret = new ArrayList<Object>();
 		int pageNum = 1;
 
