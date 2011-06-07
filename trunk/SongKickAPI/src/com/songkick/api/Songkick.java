@@ -209,7 +209,8 @@ public class Songkick {
 		logger.info("getEvent() id="+id);
 		String url = "http://api.songkick.com/api/3.0/events/" + id + ".json";
 		List<Event> list = (List<Event>) getAllPages(url, SingleEventResultsPage.class);
-		return list.get(0);
+		if (list.size()>0) return list.get(0);
+		else return null;
 	}
 	
 	/**
@@ -231,6 +232,8 @@ public class Songkick {
 		Gson gson = new Gson();
 
 		ResultsPage rp = gson.fromJson(reader, parsingClass);
+		if ((rp.getResultsPageContents()==null) || (rp.getResultsPageContents().getResults()==null))
+			return new ArrayList();
 		return rp.getResultsPageContents().getResults().getList();
 	}
 	
