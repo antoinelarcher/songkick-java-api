@@ -11,13 +11,12 @@
  */ 
 package com.songkick.api.helper;
 
-public class EventResultsPageContents implements ResultsPageContents {
+public class EventResultsPageContents extends ResultsPageContents {
 
 	private EventResults results;
 	private int totalEntries;
 	private int perPage;
 	private int page;
-	private String status;
 	
 	public Results getResults() {
 		return results;
@@ -42,13 +41,6 @@ public class EventResultsPageContents implements ResultsPageContents {
 	}
 	public void setPage(int page) {
 		this.page = page;
-	}
-	public String getStatus() {
-		return status;
-	}
-	public void setStatus(String status) {
-		this.status = status;
-	}
-	
+	}	
 	
 }

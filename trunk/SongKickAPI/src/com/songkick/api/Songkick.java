@@ -1,5 +1,6 @@
 package com.songkick.api;
 import java.io.BufferedReader;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
@@ -232,8 +233,18 @@ public class Songkick {
 		Gson gson = new Gson();
 
 		ResultsPage rp = gson.fromJson(reader, parsingClass);
-		if ((rp.getResultsPageContents()==null) || (rp.getResultsPageContents().getResults()==null))
+		if (rp.getResultsPageContents()==null)
 			return new ArrayList<Object>();
+
+		/* GSon seems to not pass through 404 errors if it gets a JSON response, so look for error
+		 * codes in the JSON and commute these to what it should do - i.e. chuck a FileNotFoundException
+		 * if we can't complete the request because the user doesn't exist
+		 */
+		if (rp.getResultsPageContents().getStatus().equals("error")) {
+			throw new FileNotFoundException();
+		}
+		
+		if (rp.getResultsPageContents().getResults()==null) return new ArrayList<Object>();
 		return rp.getResultsPageContents().getResults().getList();
 	}
 	
