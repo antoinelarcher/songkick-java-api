@@ -11,13 +11,12 @@
  */ 
 package com.songkick.api.helper;
 
-public class CalendarResultsPageContents implements ResultsPageContents {
+public class CalendarResultsPageContents extends ResultsPageContents {
 
 	private CalendarResults results;
 	private int totalEntries;
 	private int perPage;
 	private int page;
-	private String status;
 	
 	public Results getResults() {
 		return results;
@@ -42,12 +41,6 @@ public class CalendarResultsPageContents implements ResultsPageContents {
 	}
 	public void setPage(int page) {
 		this.page = page;
-	}
-	public String getStatus() {
-		return status;
-	}
-	public void setStatus(String status) {
-		this.status = status;
 	}
 	
 	
