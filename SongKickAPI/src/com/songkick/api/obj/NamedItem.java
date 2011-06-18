@@ -11,7 +11,13 @@
  */ 
 package com.songkick.api.obj;
 
-public class NamedItem {
+import java.io.Serializable;
+
+public class NamedItem implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -250856113103602826L;
 	private String displayName;
 
 	public String getDisplayName() {

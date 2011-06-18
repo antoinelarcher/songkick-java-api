@@ -11,7 +11,13 @@
  */ 
 package com.songkick.api.obj;
 
-public class MetroArea {
+import java.io.Serializable;
+
+public class MetroArea implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 8581862344272630688L;
 	private String uri;
 	private String displayName;
 	private NamedItem country;

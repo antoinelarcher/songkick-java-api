@@ -11,7 +11,13 @@
  */ 
 package com.songkick.api.obj;
 
-public class City {
+import java.io.Serializable;
+
+public class City implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -4442878945637558618L;
 	private String displayName;
 	private String city;
 	private NamedItem country;

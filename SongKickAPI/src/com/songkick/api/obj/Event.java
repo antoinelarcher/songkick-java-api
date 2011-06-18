@@ -11,9 +11,14 @@
  */ 
 package com.songkick.api.obj;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class Event {
+public class Event implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -1431026510358370079L;
 	private String displayName;
 	private String type;
 	private String uri;

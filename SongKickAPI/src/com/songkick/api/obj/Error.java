@@ -11,7 +11,13 @@
  */ 
 package com.songkick.api.obj;
 
-public class Error {
+import java.io.Serializable;
+
+public class Error implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -1080499704609833158L;
 	private String message;
 
 	public String getMessage() {

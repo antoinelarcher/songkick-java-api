@@ -11,8 +11,14 @@
  */ 
 package com.songkick.api.obj;
 
-public class Performance {
+import java.io.Serializable;
 
+public class Performance implements Serializable {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 6788614507109341429L;
 	private Artist artist;
 	private String displayName;
 	private int billingIndex;
