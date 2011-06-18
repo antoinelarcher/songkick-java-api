@@ -1,5 +1,6 @@
 package com.songkick.api.obj;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -14,7 +15,11 @@ import java.util.List;
  * 
  */
 
-public class Artist {
+public class Artist implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 4419899090126483579L;
 	private String uri;
 	private String displayName;
 	private String id;

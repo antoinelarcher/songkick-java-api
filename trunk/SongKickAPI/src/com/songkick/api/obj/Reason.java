@@ -11,9 +11,14 @@
  */ 
 package com.songkick.api.obj;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class Reason {
+public class Reason implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 53507783836589498L;
 	private List<Artist> trackedArtist;
 
 	public List<Artist> getTrackedArtist() {

@@ -11,7 +11,13 @@
  */ 
 package com.songkick.api.obj;
 
-public class SkTime {
+import java.io.Serializable;
+
+public class SkTime implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -949477400148796295L;
 	private String time;
 	private String date;
 	

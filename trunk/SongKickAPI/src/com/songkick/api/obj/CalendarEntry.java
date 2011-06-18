@@ -11,7 +11,13 @@
  */ 
 package com.songkick.api.obj;
 
-public class CalendarEntry {
+import java.io.Serializable;
+
+public class CalendarEntry implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 37451296660278349L;
 	private Event event;
 	private Reason reason;
 	private String createdAt;

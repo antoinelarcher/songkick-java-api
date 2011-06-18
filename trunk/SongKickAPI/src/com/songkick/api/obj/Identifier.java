@@ -11,7 +11,13 @@
  */ 
 package com.songkick.api.obj;
 
-public class Identifier {
+import java.io.Serializable;
+
+public class Identifier implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 4030075566339406196L;
 	private String href;
 	private String mbid;
 	
