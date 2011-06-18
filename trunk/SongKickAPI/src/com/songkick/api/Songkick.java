@@ -74,6 +74,7 @@ public class Songkick {
 		logger.debug("connecting to " + urlStr);
 		URL url = new URL(urlStr);
 		HttpURLConnection c = (HttpURLConnection) url.openConnection();
+		if (c.getResponseCode()!=200) throw new FileNotFoundException();
 		return new BufferedReader(new InputStreamReader(c.getInputStream()));
 	}
 	
